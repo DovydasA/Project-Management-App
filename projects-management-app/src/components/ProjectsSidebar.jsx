@@ -1,15 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import ProjectItem from "./ProjectItem";
 
-function ProjectsSidebar({ onNewProject }) {
-  const [projectsList, setProjectsList] = useState([
-    "Learning React",
-    "Building Projects",
-    "Mastering Tailwind CSS",
-    "Creating Portfolio",
-    "Deploying Apps",
-  ]);
-
+function ProjectsSidebar({ projectsList, onNewProject }) {
   const activeProjectTab = "Building Projects";
 
   return (
@@ -29,9 +21,9 @@ function ProjectsSidebar({ onNewProject }) {
       <ul>
         {projectsList.map((project) => (
           <ProjectItem
-            key={project}
-            Title={project}
-            isActive={project === activeProjectTab}
+            key={project.title}
+            title={project.title}
+            isActive={project.title === activeProjectTab}
           />
         ))}
       </ul>

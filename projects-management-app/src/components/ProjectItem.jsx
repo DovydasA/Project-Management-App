@@ -1,4 +1,4 @@
-function ProjectItem({ Title, isActive }) {
+function ProjectItem({ title, isActive }) {
   return (
     <li
       className={
@@ -6,7 +6,7 @@ function ProjectItem({ Title, isActive }) {
         (isActive ? "bg-stone-500" : undefined)
       }
     >
-      {Title}
+      {title}
     </li>
   );
 }
