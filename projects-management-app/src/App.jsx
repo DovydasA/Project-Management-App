@@ -1,27 +1,42 @@
 import { useEffect, useState } from "react";
 import ProjectsSidebar from "./components/ProjectsSidebar";
 import NewProject from "./components/NewProject";
+import ProjectInfo from "./components/ProjectInfo";
 
 const projectsListArr = [
-  { title: "Learning React", description: "", dueDate: "" },
-  { title: "Building Projects", description: "", dueDate: "" },
-  { title: "Mastering Tailwind CSS", description: "", dueDate: "" },
-  { title: "Creating Portfolio", description: "", dueDate: "" },
-  { title: "Deploying Apps", description: "", dueDate: "" },
-  { title: "Building More Projects", description: "", dueDate: "" },
+  {
+    id: 1,
+    title: "Learning React",
+    description: "some description",
+    dueDate: "05-07-2024",
+  },
+  { id: 2, title: "Building Projects", description: "", dueDate: "" },
+  { id: 3, title: "Mastering Tailwind CSS", description: "", dueDate: "" },
+  { id: 4, title: "Creating Portfolio", description: "", dueDate: "" },
+  { id: 5, title: "Deploying Apps", description: "", dueDate: "" },
+  { id: 6, title: "Building More Projects", description: "", dueDate: "" },
 ];
 
 function App() {
   const [displayNewProjectPage, setDisplayNewProjectPage] = useState(false);
   const [projectsList, setProjectsList] = useState([...projectsListArr]);
+  const [activeTabId, setActiveTabId] = useState(1);
 
   const handleNewProject = () => {
     setDisplayNewProjectPage(true);
   };
 
   const addNewProject = (newProject) => {
-    setProjectsList([...projectsList, newProject]);
+    const newId = projectsList[projectsList.length - 1].id + 1;
+    setProjectsList([
+      ...projectsList,
+      {
+        id: newId,
+        ...newProject,
+      },
+    ]);
     setDisplayNewProjectPage(false);
+    setActiveTabId(newId);
   };
 
   const handleCancelNewProject = () => {
@@ -31,6 +46,8 @@ function App() {
   return (
     <div className="mt-16 flex">
       <ProjectsSidebar
+        activeTab={activeTabId}
+        setActiveTab={setActiveTabId}
         projectsList={projectsList}
         onNewProject={handleNewProject}
       />
@@ -41,7 +58,9 @@ function App() {
             onCancel={handleCancelNewProject}
           />
         ) : (
-          <h1> info for the selected project</h1>
+          <ProjectInfo
+            project={projectsList.find((project) => project.id === activeTabId)}
+          />
         )}
       </main>
     </div>

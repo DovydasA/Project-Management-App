@@ -1,9 +1,12 @@
 import React from "react";
 import ProjectItem from "./ProjectItem";
 
-function ProjectsSidebar({ projectsList, onNewProject }) {
-  const activeProjectTab = "Building Projects";
-
+function ProjectsSidebar({
+  activeTab,
+  setActiveTab,
+  projectsList,
+  onNewProject,
+}) {
   return (
     <section className="h-[calc(100svh-4rem)] w-1/3 min-w-[20rem] rounded-r-2xl bg-black p-16 pr-0 text-white">
       <div className="flex content-center items-center justify-center">
@@ -23,7 +26,8 @@ function ProjectsSidebar({ projectsList, onNewProject }) {
           <ProjectItem
             key={project.title}
             title={project.title}
-            isActive={project.title === activeProjectTab}
+            isActive={project.id === activeTab}
+            onClick={() => setActiveTab(project.id)}
           />
         ))}
       </ul>
