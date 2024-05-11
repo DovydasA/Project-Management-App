@@ -1,28 +1,31 @@
 import { forwardRef } from "react";
 
-const Input = forwardRef(function Input({ label, type, ...props }, ref) {
+const Input = forwardRef(function Input({ label, textarea, ...props }, ref) {
+  const inputClasses =
+    "w-full rounded border-2 border-stone-300 bg-stone-200 p-1 text-stone-600 focus:border-stone-600 focus:outline-none";
   return (
-    <span className="flex flex-col">
-      <label className="text-left text-[1.5rem] font-semibold uppercase text-stone-600">
+    <div className="text-left">
+      <label className="text-sm font-bold uppercase text-stone-500">
         {label}
+        {textarea ? (
+          <textarea
+            ref={ref}
+            className={inputClasses}
+            required
+            rows={4}
+            {...props}
+          />
+        ) : (
+          <input
+            ref={ref}
+            className={inputClasses}
+            required
+            type="text"
+            {...props}
+          />
+        )}
       </label>
-      {type === "textarea" ? (
-        <textarea
-          ref={ref}
-          className="border bg-stone-300 p-4"
-          required
-          {...props}
-        />
-      ) : (
-        <input
-          ref={ref}
-          className="border bg-stone-300 p-4"
-          required
-          type={type}
-          {...props}
-        />
-      )}
-    </span>
+    </div>
   );
 });
 

@@ -22,21 +22,33 @@ function NewProject({ onSave, onCancel }) {
     onSave(newProject);
   };
   return (
-    <div className="mt-8 flex h-full flex-col justify-start gap-8 py-8 pl-8 pr-40">
-      <span className="flex">
-        <button className="ml-auto rounded px-8 py-2 text-[1.5rem]">
-          Cancel
-        </button>
-        <button
-          onClick={handleSaveProject}
-          className="rounded bg-stone-900 px-8 py-2 text-[1.5rem] text-stone-300"
-        >
-          Save
-        </button>
-      </span>
-      <Input ref={title} label="Title" type="text" />
-      <Input ref={description} label="Description" type="textarea" />
-      <Input ref={dueDate} label="Due Date" type="date" />
+    <div className="flex h-full flex-col gap-8 px-8 py-8">
+      <menu className="flex justify-end">
+        <li>
+          <button
+            onClick={onCancel}
+            className="rounded px-8 py-2 text-[1.5rem] text-stone-800 hover:text-stone-950"
+          >
+            Cancel
+          </button>
+        </li>
+        <li>
+          <button
+            onClick={handleSaveProject}
+            className="rounded-md bg-stone-700 px-8 py-2 text-[1.5rem] text-stone-50 hover:bg-stone-950"
+          >
+            Save
+          </button>
+        </li>
+      </menu>
+      <fieldset className="border-2 p-8">
+        <legend className="ml-8 text-left text-2xl font-semibold">
+          New Project
+        </legend>
+        <Input ref={title} label="Title" type="text" />
+        <Input ref={description} label="Description" textarea />
+        <Input ref={dueDate} label="Due Date" type="date" />
+      </fieldset>
     </div>
   );
 }

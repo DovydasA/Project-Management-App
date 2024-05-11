@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import ProjectsSidebar from "./components/ProjectsSidebar";
 import NewProject from "./components/NewProject";
 import ProjectInfo from "./components/ProjectInfo";
+import NoProjectSelected from "./components/NoProjectSelected";
 
 const projectsListArr = [
   {
@@ -20,7 +21,7 @@ const projectsListArr = [
 function App() {
   const [displayNewProjectPage, setDisplayNewProjectPage] = useState(false);
   const [projectsList, setProjectsList] = useState([...projectsListArr]);
-  const [activeTabId, setActiveTabId] = useState(1);
+  const [activeTabId, setActiveTabId] = useState(null);
 
   const handleNewProject = () => {
     setDisplayNewProjectPage(true);
@@ -43,6 +44,13 @@ function App() {
     setDisplayNewProjectPage(false);
   };
 
+  const deleteProject = (projectId) => {
+    setProjectsList((prev) =>
+      prev.filter((project) => project.id !== projectId),
+    );
+    setActiveTabId(1);
+  };
+
   return (
     <div className="mt-16 flex">
       <ProjectsSidebar
@@ -51,16 +59,19 @@ function App() {
         projectsList={projectsList}
         onNewProject={handleNewProject}
       />
-      <main className="h-[calc(100svh-4rem)] w-full p-8 text-center">
+      <main className="container h-[calc(100svh-4rem)] w-full p-8 text-center">
         {displayNewProjectPage ? (
           <NewProject
             onSave={addNewProject}
             onCancel={handleCancelNewProject}
           />
-        ) : (
+        ) : activeTabId ? (
           <ProjectInfo
+            onDelete={deleteProject}
             project={projectsList.find((project) => project.id === activeTabId)}
           />
+        ) : (
+          <NoProjectSelected />
         )}
       </main>
     </div>
