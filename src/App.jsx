@@ -14,7 +14,7 @@ function App() {
     return (
       storedProjectsState || {
         activeProjectId: undefined,
-        projects: [...projectsListArr],
+        projects: [],
       }
     );
   });
@@ -109,7 +109,7 @@ function App() {
     );
   }
 
-  return projectsState.projects && projectsState.projects.length > 0 ? (
+  return (
     <div className="mt-16 flex">
       <ProjectsSidebar
         projectsState={projectsState}
@@ -120,8 +120,6 @@ function App() {
         {content}
       </main>
     </div>
-  ) : (
-    <p>Loading...</p>
   );
 }
 
