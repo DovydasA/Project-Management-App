@@ -19,60 +19,75 @@ const projectsListArr = [
 ];
 
 function App() {
-  const [displayNewProjectPage, setDisplayNewProjectPage] = useState(false);
-  const [projectsList, setProjectsList] = useState([...projectsListArr]);
-  const [activeTabId, setActiveTabId] = useState(null);
+  const [projectsState, setProjectsState] = useState({
+    activeProjectId: undefined,
+    projects: [...projectsListArr],
+  });
+
+  function setActiveTabId(id) {
+    setProjectsState((prev) => ({ ...prev, activeProjectId: id }));
+  }
 
   const handleNewProject = () => {
-    setDisplayNewProjectPage(true);
+    setProjectsState((prev) => ({ ...prev, activeProjectId: -1 }));
   };
 
   const addNewProject = (newProject) => {
-    const newId = projectsList[projectsList.length - 1].id + 1;
-    setProjectsList([
-      ...projectsList,
-      {
-        id: newId,
-        ...newProject,
-      },
-    ]);
-    setDisplayNewProjectPage(false);
-    setActiveTabId(newId);
+    const newId =
+      projectsState.projects.length <= 1
+        ? 1
+        : projectsState.projects[projectsState.projects.length - 1].id + 1;
+
+    setProjectsState((prev) => ({
+      ...prev,
+      activeProjectId: newId,
+      projects: [
+        ...prev.projects,
+        {
+          id: newId,
+          ...newProject,
+        },
+      ],
+    }));
   };
 
   const handleCancelNewProject = () => {
-    setDisplayNewProjectPage(false);
+    setProjectsState((prev) => ({
+      ...prev,
+      activeProjectId: undefined,
+    }));
   };
 
   const deleteProject = (projectId) => {
-    setProjectsList((prev) =>
-      prev.filter((project) => project.id !== projectId),
-    );
-    setActiveTabId(1);
+    setProjectsState((prev) => ({
+      ...prev,
+      activeProjectId: undefined,
+      projects: prev.projects.filter((project) => project.id !== projectId),
+    }));
   };
+
+  let content;
+  if (projectsState.activeProjectId === -1) {
+    content = (
+      <NewProject onSave={addNewProject} onCancel={handleCancelNewProject} />
+    );
+  } else if (projectsState.activeProjectId === undefined) {
+    content = <NoProjectSelected onNewProject={handleNewProject} />;
+  } else {
+    content = (
+      <ProjectInfo projectsState={projectsState} onDelete={deleteProject} />
+    );
+  }
 
   return (
     <div className="mt-16 flex">
       <ProjectsSidebar
-        activeTab={activeTabId}
+        projectsState={projectsState}
         setActiveTab={setActiveTabId}
-        projectsList={projectsList}
         onNewProject={handleNewProject}
       />
       <main className="container h-[calc(100svh-4rem)] w-full p-8 text-center">
-        {displayNewProjectPage ? (
-          <NewProject
-            onSave={addNewProject}
-            onCancel={handleCancelNewProject}
-          />
-        ) : activeTabId ? (
-          <ProjectInfo
-            onDelete={deleteProject}
-            project={projectsList.find((project) => project.id === activeTabId)}
-          />
-        ) : (
-          <NoProjectSelected />
-        )}
+        {content}
       </main>
     </div>
   );
