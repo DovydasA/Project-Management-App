@@ -41,16 +41,15 @@ function NewProject({ onSave, onCancel }) {
           <li>
             <button
               onClick={onCancel}
-              className="rounded px-8 py-2 text-[1.5rem] text-stone-800 hover:text-stone-950"
+              className="rounded px-4 py-1 text-stone-800 hover:text-stone-950"
             >
               Cancel
             </button>
-            s
           </li>
           <li>
             <button
               onClick={handleSaveProject}
-              className="rounded-md bg-stone-700 px-8 py-2 text-[1.5rem] text-stone-50 hover:bg-stone-950"
+              className="rounded-md bg-stone-700 px-4 py-1 text-stone-50 hover:bg-stone-950"
             >
               Save
             </button>

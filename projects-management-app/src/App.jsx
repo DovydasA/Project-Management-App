@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ProjectsSidebar from "./components/ProjectsSidebar";
 import NewProject from "./components/NewProject";
 import ProjectInfo from "./components/ProjectInfo";
@@ -7,10 +7,21 @@ import NoProjectSelected from "./components/NoProjectSelected";
 import projectsListArr from "./utils/projectsListArr";
 
 function App() {
-  const [projectsState, setProjectsState] = useState({
-    activeProjectId: undefined,
-    projects: [...projectsListArr],
+  const [projectsState, setProjectsState] = useState(() => {
+    const storedProjectsState = JSON.parse(
+      localStorage.getItem("projectsState"),
+    );
+    return (
+      storedProjectsState || {
+        activeProjectId: undefined,
+        projects: [...projectsListArr],
+      }
+    );
   });
+
+  useEffect(() => {
+    localStorage.setItem("projectsState", JSON.stringify(projectsState));
+  }, [projectsState]);
 
   function handleAddTask(task) {
     setProjectsState((prev) => ({
@@ -59,6 +70,7 @@ function App() {
         {
           id: newId,
           ...newProject,
+          tasks: [],
         },
       ],
     }));
@@ -96,7 +108,8 @@ function App() {
       />
     );
   }
-  return (
+
+  return projectsState.projects && projectsState.projects.length > 0 ? (
     <div className="mt-16 flex">
       <ProjectsSidebar
         projectsState={projectsState}
@@ -107,6 +120,8 @@ function App() {
         {content}
       </main>
     </div>
+  ) : (
+    <p>Loading...</p>
   );
 }
 

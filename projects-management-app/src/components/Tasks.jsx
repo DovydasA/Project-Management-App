@@ -6,8 +6,8 @@ function Tasks({ tasks, onAdd, onDelete }) {
     <section>
       <h2 className="mb-4 text-xl font-semibold text-stone-700">Tasks</h2>
       <NewTask onAdd={onAdd} />
-      {tasks ? (
-        <ul>
+      {tasks && tasks.length > 0 ? (
+        <ul className="grip mt-4 gap-1">
           {tasks.map((task) => (
             <Task key={task} task={task} onDelete={onDelete} />
           ))}
