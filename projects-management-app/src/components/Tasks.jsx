@@ -1,11 +1,19 @@
-function Tasks() {
+import NewTask from "./NewTask";
+import Task from "./Task";
+
+function Tasks({ tasks, onAdd, onDelete }) {
   return (
     <section>
-      <h2 className="mb-4 text-2xl font-bold text-stone-700">Tasks</h2>
-      {!true ? (
-        <ul></ul>
+      <h2 className="mb-4 text-xl font-semibold text-stone-700">Tasks</h2>
+      <NewTask onAdd={onAdd} />
+      {tasks ? (
+        <ul>
+          {tasks.map((task) => (
+            <Task key={task} task={task} onDelete={onDelete} />
+          ))}
+        </ul>
       ) : (
-        <p className="mb-4 text-stone-800">No tasks available</p>
+        <p className="my-4 text-stone-800">No tasks available</p>
       )}
     </section>
   );

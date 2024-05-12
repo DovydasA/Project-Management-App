@@ -3,8 +3,10 @@ import Tasks from "./Tasks";
 function ProjectInfo({
   projectsState: { activeProjectId, projects },
   onDelete,
+  onAddTask,
+  onDeleteTask,
 }) {
-  const { id, title, description, dueDate } = projects.find(
+  const { id, title, description, dueDate, tasks } = projects.find(
     (project) => project.id === activeProjectId,
   );
   const formattedDueDate = new Date(dueDate).toLocaleDateString("en-US", {
@@ -12,6 +14,7 @@ function ProjectInfo({
     month: "long",
     day: "numeric",
   });
+
   return (
     <div className="flex flex-col justify-start gap-2 px-4 text-left">
       <header className="border-b-2 pb-4">
@@ -27,7 +30,7 @@ function ProjectInfo({
         <p className="mb-4 text-stone-400">{formattedDueDate}</p>
         <p className="whitespace-pre-wrap text-stone-600">{description}</p>
       </header>
-      <Tasks />
+      <Tasks tasks={tasks} onAdd={onAddTask} onDelete={onDeleteTask} />
     </div>
   );
 }

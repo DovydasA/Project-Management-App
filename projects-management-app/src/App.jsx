@@ -4,25 +4,38 @@ import NewProject from "./components/NewProject";
 import ProjectInfo from "./components/ProjectInfo";
 import NoProjectSelected from "./components/NoProjectSelected";
 
-const projectsListArr = [
-  {
-    id: 1,
-    title: "Learning React",
-    description: "some description",
-    dueDate: "05-07-2024",
-  },
-  { id: 2, title: "Building Projects", description: "", dueDate: "" },
-  { id: 3, title: "Mastering Tailwind CSS", description: "", dueDate: "" },
-  { id: 4, title: "Creating Portfolio", description: "", dueDate: "" },
-  { id: 5, title: "Deploying Apps", description: "", dueDate: "" },
-  { id: 6, title: "Building More Projects", description: "", dueDate: "" },
-];
+import projectsListArr from "./utils/projectsListArr";
 
 function App() {
   const [projectsState, setProjectsState] = useState({
     activeProjectId: undefined,
     projects: [...projectsListArr],
   });
+
+  function handleAddTask(task) {
+    setProjectsState((prev) => ({
+      ...prev,
+      projects: [
+        ...prev.projects.map((project) =>
+          project.id === projectsState.activeProjectId
+            ? { ...project, tasks: [...project.tasks, task] }
+            : project,
+        ),
+      ],
+    }));
+  }
+  function handleDeleteTask(task) {
+    setProjectsState((prev) => ({
+      ...prev,
+      projects: [
+        ...prev.projects.map((project) =>
+          project.id === projectsState.activeProjectId
+            ? { ...project, tasks: [...project.tasks.filter((t) => t != task)] }
+            : project,
+        ),
+      ],
+    }));
+  }
 
   function setActiveTabId(id) {
     setProjectsState((prev) => ({ ...prev, activeProjectId: id }));
@@ -75,10 +88,14 @@ function App() {
     content = <NoProjectSelected onNewProject={handleNewProject} />;
   } else {
     content = (
-      <ProjectInfo projectsState={projectsState} onDelete={deleteProject} />
+      <ProjectInfo
+        projectsState={projectsState}
+        onDelete={deleteProject}
+        onAddTask={handleAddTask}
+        onDeleteTask={handleDeleteTask}
+      />
     );
   }
-
   return (
     <div className="mt-16 flex">
       <ProjectsSidebar
