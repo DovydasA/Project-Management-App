@@ -3,9 +3,8 @@ import ProjectItem from "./ProjectItem";
 import NewProjectButton from "./NewProjectButton";
 
 function ProjectsSidebar({
-  activeTab,
+  projectsState: { activeProjectId: activeTab, projects },
   setActiveTab,
-  projectsList,
   onNewProject,
 }) {
   return (
@@ -17,8 +16,8 @@ function ProjectsSidebar({
         </NewProjectButton>
       </div>
 
-      <ul>
-        {projectsList.map((project) => (
+      <ul className="mt-8 grid gap-3">
+        {projects.map((project) => (
           <ProjectItem
             key={project.title}
             title={project.title}

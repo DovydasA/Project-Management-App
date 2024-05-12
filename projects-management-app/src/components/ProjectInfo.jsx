@@ -1,28 +1,34 @@
+import Tasks from "./Tasks";
+
 function ProjectInfo({
-  project: { id, title, description, dueDate },
+  projectsState: { activeProjectId, projects },
   onDelete,
 }) {
+  const { id, title, description, dueDate } = projects.find(
+    (project) => project.id === activeProjectId,
+  );
+  const formattedDueDate = new Date(dueDate).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
   return (
-    <section className="flex h-2/3 flex-col justify-around gap-4 px-4 text-left">
-      <div className="flex flex-col gap-4">
-        <h2 className="text-[2rem] font-bold">{title}</h2>
-        <p>
-          <strong>Description: </strong>
-          {description}
-        </p>
-        <p>
-          <strong>Due Date: </strong>
-          {dueDate}
-        </p>
-      </div>
-
-      <button
-        onClick={() => onDelete(id)}
-        className="mr-auto rounded-2xl border-4 border-black bg-black px-3 py-2 font-extrabold text-red-500 hover:border-red-500"
-      >
-        Delete
-      </button>
-    </section>
+    <div className="flex flex-col justify-start gap-2 px-4 text-left">
+      <header className="border-b-2 pb-4">
+        <div className="mt-8 flex items-center justify-between">
+          <h2 className="text-3xl font-bold text-stone-600">{title}</h2>
+          <button
+            onClick={() => onDelete(id)}
+            className="my-2 rounded-md bg-stone-700 px-4 py-1 font-semibold text-stone-400 hover:bg-stone-600 hover:text-stone-300"
+          >
+            Delete
+          </button>
+        </div>
+        <p className="mb-4 text-stone-400">{formattedDueDate}</p>
+        <p className="whitespace-pre-wrap text-stone-600">{description}</p>
+      </header>
+      <Tasks />
+    </div>
   );
 }
 

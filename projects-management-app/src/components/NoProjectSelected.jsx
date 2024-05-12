@@ -1,7 +1,7 @@
 import logo from "/logo.png";
 import NewProjectButton from "./NewProjectButton";
 
-function NoProjectSelected() {
+function NoProjectSelected({ onNewProject }) {
   return (
     <div className="container flex flex-col items-center justify-center gap-4 py-4 text-center">
       <img
@@ -11,7 +11,9 @@ function NoProjectSelected() {
       />
       <h2 className="text-xl font-bold text-stone-600">No projects selected</h2>
       <p className="mb-4">Select a project or get started with a new one</p>
-      <NewProjectButton>Create New Project</NewProjectButton>
+      <NewProjectButton onClick={onNewProject}>
+        Create New Project
+      </NewProjectButton>
     </div>
   );
 }
