@@ -1,92 +1,57 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useReducer } from "react";
 
 import ProjectsStateContext from "./ProjectsStateContext.js";
 import ProjectsStateReducer from "./ProjectsStateReducer.js";
 
 const ProjectsStateProvider = ({ children }) => {
-  const [projectsState, setProjectsState] = useState(() => {
-    const storedProjectsState = JSON.parse(
-      localStorage.getItem("projectsState"),
-    );
-    return (
-      storedProjectsState || {
-        activeProjectId: undefined,
-        projects: [],
-      }
-    );
-  });
+  const [projectsState, dispatchProjectsAction] = useReducer(
+    ProjectsStateReducer,
+    {
+      activeProjectId: undefined,
+      projects: [],
+    },
+    () => {
+      const storedProjectsState = JSON.parse(
+        localStorage.getItem("projectsState"),
+      );
+      return (
+        storedProjectsState || {
+          activeProjectId: undefined,
+          projects: [],
+        }
+      );
+    },
+  );
 
   useEffect(() => {
     localStorage.setItem("projectsState", JSON.stringify(projectsState));
   }, [projectsState]);
 
+  function addNewProject(newProject) {
+    dispatchProjectsAction({ type: "ADD_PROJECT", payload: newProject });
+  }
+  const deleteProject = (projectId) => {
+    dispatchProjectsAction({ type: "DELETE_PROJECT", payload: projectId });
+  };
+
   function handleAddTask(task) {
-    setProjectsState((prev) => ({
-      ...prev,
-      projects: [
-        ...prev.projects.map((project) =>
-          project.id === projectsState.activeProjectId
-            ? { ...project, tasks: [...project.tasks, task] }
-            : project,
-        ),
-      ],
-    }));
+    dispatchProjectsAction({ type: "ADD_TASK", payload: task });
   }
   function handleDeleteTask(task) {
-    setProjectsState((prev) => ({
-      ...prev,
-      projects: [
-        ...prev.projects.map((project) =>
-          project.id === projectsState.activeProjectId
-            ? { ...project, tasks: [...project.tasks.filter((t) => t != task)] }
-            : project,
-        ),
-      ],
-    }));
+    dispatchProjectsAction({ type: "DELETE_TASK", payload: task });
   }
 
   function setActiveTabId(id) {
-    setProjectsState((prev) => ({ ...prev, activeProjectId: id }));
+    console.log("setActiveTabId", id);
+    dispatchProjectsAction({ type: "SET_ACTIVE_PROJECT", payload: id });
   }
 
-  const handleNewProject = () => {
-    setProjectsState((prev) => ({ ...prev, activeProjectId: -1 }));
-  };
-
-  const addNewProject = (newProject) => {
-    const newId =
-      projectsState.projects.length <= 1
-        ? 1
-        : projectsState.projects[projectsState.projects.length - 1].id + 1;
-
-    setProjectsState((prev) => ({
-      ...prev,
-      activeProjectId: newId,
-      projects: [
-        ...prev.projects,
-        {
-          id: newId,
-          ...newProject,
-          tasks: [],
-        },
-      ],
-    }));
-  };
-
-  const handleCancelNewProject = () => {
-    setProjectsState((prev) => ({
-      ...prev,
-      activeProjectId: undefined,
-    }));
-  };
-
-  const deleteProject = (projectId) => {
-    setProjectsState((prev) => ({
-      ...prev,
-      activeProjectId: undefined,
-      projects: prev.projects.filter((project) => project.id !== projectId),
-    }));
-  };
+  function handleNewProject() {
+    dispatchProjectsAction({ type: "NEW_PROJECT_PAGE" });
+  }
+  function handleCancelNewProject() {
+    dispatchProjectsAction({ type: "CANCEL_NEW_PROJECT" });
+  }
 
   const contextValue = {
     projectsState: {
@@ -94,10 +59,10 @@ const ProjectsStateProvider = ({ children }) => {
       projects: [...projectsState.projects],
     },
     addProject: addNewProject,
-    deleteProject: deleteProject,
+    deleteProject,
     addTask: handleAddTask,
     deleteTask: handleDeleteTask,
-    setActiveTabId: setActiveTabId,
+    setActiveTabId,
     startNewProject: handleNewProject,
     cancelNewProject: handleCancelNewProject,
   };
