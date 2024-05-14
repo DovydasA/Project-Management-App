@@ -9,4 +9,4 @@ Skills:
 - Deployment of React Vite Apps to github pages
 
 Changelog post initial practice complete:
-14-05-2024: fixed prop drilling by implementing context via React.createContext() and React.useContext() hooks.
+- 14-05-2024: fixed prop drilling by implementing context via React.createContext() and React.useContext() hooks.
