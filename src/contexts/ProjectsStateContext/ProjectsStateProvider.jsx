@@ -50,7 +50,6 @@ const ProjectsStateProvider = ({ children }) => {
   }
 
   const handleNewProject = () => {
-    console.log("Setting activeProjectId to -1"); // Debugging log
     setProjectsState((prev) => ({ ...prev, activeProjectId: -1 }));
   };
 

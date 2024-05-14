@@ -6,33 +6,22 @@ import ProjectInfo from "./ProjectInfo";
 
 function Content() {
   const {
-    projectsState,
-    addProject,
-    cancelNewProject,
-    deleteProject,
-    addTask,
-    deleteTask,
+    projectsState: { activeProjectId },
   } = useContext(ProjectsStateContext);
-  let content;
-  console.log("Active Project ID:", projectsState.activeProjectId); // Debugging line
 
-  if (projectsState.activeProjectId === -1) {
-    console.log("here2");
-    content = <NewProject onSave={addProject} onCancel={cancelNewProject} />;
-  } else if (projectsState.activeProjectId === undefined) {
-    console.log("here3");
-    content = <NoProjectSelected />;
-  } else {
-    console.log("here4");
-    content = (
-      <ProjectInfo
-        projectsState={projectsState}
-        onDelete={deleteProject}
-        onAddTask={addTask}
-        onDeleteTask={deleteTask}
-      />
-    );
+  let content;
+  switch (activeProjectId) {
+    case undefined:
+      content = <NoProjectSelected />;
+      break;
+    case -1:
+      content = <NewProject />;
+      break;
+    default:
+      content = <ProjectInfo />;
+      break;
   }
+
   return (
     <main className="container h-[calc(100svh-4rem)] w-full p-8 text-center">
       {content}
