@@ -1,8 +1,9 @@
-# React + Vite
+# React Practice Project - Project Management App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Skills:
+- State Management
+- React Hooks / Functions: useState, useEffect, useRef, forwardRef, useImperativeHandle
+- React-DOM Portals for modals
+- Local Storage Implementation
+- Styling with TailwindCss (+ usage of npm tailwind-merge, extension Tailwind CSS IntelliSense and extension Tailwind Fold)
+- Deployment of React Vite Apps to github pages
