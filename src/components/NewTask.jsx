@@ -1,7 +1,10 @@
 import { useState } from "react";
+import { useContext } from "react";
+import ProjectsStateContext from "../contexts/ProjectsStateContext/ProjectsStateContext";
 
-function NewTask({ onAdd }) {
+function NewTask() {
   const [enteredTask, setEnteredTask] = useState("");
+  const { addTask } = useContext(ProjectsStateContext);
 
   function handleChange(e) {
     const { value } = e.target;
@@ -9,7 +12,7 @@ function NewTask({ onAdd }) {
   }
 
   function handleClick() {
-    onAdd(enteredTask);
+    addTask(enteredTask);
     setEnteredTask("");
   }
 

@@ -1,13 +1,14 @@
 import { createContext } from "react";
 
 const ProjectsStateContext = createContext({
-  activeProjectId: undefined,
-  projects: [],
+  projectsState: { activeProjectId: undefined, projects: [] },
   addProject: () => {},
   deleteProject: () => {},
   addTask: () => {},
   deleteTask: () => {},
   setActiveTabId: () => {},
+  startNewProject: () => {},
+  cancelNewProject: () => {},
 });
 
 export default ProjectsStateContext;

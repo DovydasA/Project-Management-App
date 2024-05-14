@@ -1,14 +1,17 @@
+import { useContext } from "react";
+import ProjectsStateContext from "../contexts/ProjectsStateContext/ProjectsStateContext";
 import Tasks from "./Tasks";
 
-function ProjectInfo({
-  projectsState: { activeProjectId, projects },
-  onDelete,
-  onAddTask,
-  onDeleteTask,
-}) {
+function ProjectInfo() {
+  const {
+    projectsState: { activeProjectId, projects },
+    deleteProject,
+  } = useContext(ProjectsStateContext);
+
   const { id, title, description, dueDate, tasks } = projects.find(
     (project) => project.id === activeProjectId,
   );
+
   const formattedDueDate = new Date(dueDate).toLocaleDateString("en-US", {
     year: "numeric",
     month: "long",
@@ -21,7 +24,7 @@ function ProjectInfo({
         <div className="mt-8 flex items-center justify-between">
           <h2 className="text-3xl font-bold text-stone-600">{title}</h2>
           <button
-            onClick={() => onDelete(id)}
+            onClick={() => deleteProject(id)}
             className="my-2 rounded-md bg-stone-700 px-4 py-1 font-semibold text-stone-400 hover:bg-stone-600 hover:text-stone-300"
           >
             Delete
@@ -30,7 +33,7 @@ function ProjectInfo({
         <p className="mb-4 text-stone-400">{formattedDueDate}</p>
         <p className="whitespace-pre-wrap text-stone-600">{description}</p>
       </header>
-      <Tasks tasks={tasks} onAdd={onAddTask} onDelete={onDeleteTask} />
+      <Tasks tasks={tasks} />
     </div>
   );
 }

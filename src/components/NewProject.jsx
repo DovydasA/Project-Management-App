@@ -1,8 +1,11 @@
-import { useRef } from "react";
+import { useRef, useContext } from "react";
+import ProjectsStateContext from "../contexts/ProjectsStateContext/ProjectsStateContext";
+
 import Input from "./Input";
 import Modal from "./Modal";
 
-function NewProject({ onSave, onCancel }) {
+function NewProject() {
+  const { addProject, cancelNewProject } = useContext(ProjectsStateContext);
   const modalRef = useRef(null);
   const title = useRef(null);
   const description = useRef(null);
@@ -27,7 +30,7 @@ function NewProject({ onSave, onCancel }) {
       description: description.current.value,
       dueDate: dueDate.current.value,
     };
-    onSave(newProject);
+    addProject(newProject);
   };
 
   return (
@@ -40,7 +43,7 @@ function NewProject({ onSave, onCancel }) {
         <menu className="flex justify-end">
           <li>
             <button
-              onClick={onCancel}
+              onClick={cancelNewProject}
               className="rounded px-4 py-1 text-stone-800 hover:text-stone-950"
             >
               Cancel
